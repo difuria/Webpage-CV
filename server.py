@@ -5,6 +5,9 @@ import csv, os
 #, pymongo
 app = Flask(__name__)
 """
+Activate virtual environment
+.\\venv\\Scripts\\activate
+
 To kick off the server
 set FLASK_APP=server.py
 $env:FLASK_APP = "server.py"
@@ -46,8 +49,8 @@ def submit_form():
     else:
         return render_template('thank you.html', message='Something went wrong. Try again!')
 
-@app.route('/download_cv', methods=['GET'])
-def download_cv():
+@app.route('/Dom_di_Furia_CV', methods=['GET'])
+def Dom_di_Furia_CV():
     if request.method == 'GET':
         return send_from_directory('static', 'Dom_di_Furia_CV.pdf')
     else:
