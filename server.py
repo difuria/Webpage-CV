@@ -1,6 +1,8 @@
 from datetime import datetime
+from dateutil import relativedelta
+from pathlib import Path
 from flask import Flask, render_template, send_from_directory, request, redirect, Markup
-import csv, os
+import json, os
 # python anywhere doesn't have pymongo on the whitelist for free accounts
 #, pymongo
 app = Flask(__name__)
@@ -22,13 +24,47 @@ python -m  flask run
 # db = client['Website-CV'] 
 # mycol = db["Client"] 
 
+@app.route('/favicon.ico')
+def favicon():
+    # Saves specifying the favicon on each html page
+    return send_from_directory(os.path.join(app.root_path, 'static', 'assets', 'images'), 'profile.ico')
+
 @app.route('/')
 def my_home():
     return render_template('index.html')
 
+def get_duration(start_date):
+    duration_string = ''
+    current_date = datetime.now()
+    duration_time = relativedelta.relativedelta(current_date, start_date) 
+    if duration_time.years > 0:
+        duration_string += f'{duration_time.years} year'
+        if duration_time.years > 1:
+            duration_string += 's'
+        duration_string += ' '
+    
+    if duration_time.months > 0:
+        duration_string += f'{duration_time.months} month'
+        if duration_time.months > 1:
+            duration_string += 's'
+        duration_string += ' '
+    
+    if not duration_string:
+        if duration_time.days < 1:
+            duration_string = 'First day'
+        else:
+            duration_string += f'{duration_time.days} day'
+            if duration_time.days > 1:
+                duration_string += 's'
+    
+    return duration_string.strip()
+
 @app.route('/<string:html_page>')
 def page(html_page="index.html"):
-    return render_template(html_page)
+    if html_page == "Experience and Education.html":
+        return render_template(html_page, company_duration=get_duration(datetime(2014,11,24)), role_duration=get_duration(datetime(2021,1,1)))
+    else:
+        return render_template(html_page)
 
 @app.route('/submit_form', methods=['POST', 'GET'])
 def submit_form():
@@ -43,7 +79,7 @@ def submit_form():
         # else:
         #     db.Contact.insert_one({'email':data['email'], 'subject':data['subject'], 'message':data['message'], 'counter':1, 'date':datetime.now().strftime("%d/%m/%Y, %H:%M:%S")})
 
-        write_to_csv(data)
+        write_to_json(data)
         # TODO - add a means of emailing said person / notifying me this has happened
         return render_template('thank you.html', message=Markup('Submission successful!<br>I\'ll be in contact as soon as possible.'))
     else:
@@ -56,7 +92,8 @@ def Dom_di_Furia_CV():
     else:
         return 'Something went wrong. Try again!'
 
-def write_to_csv(data):
-    with open('database.csv', newline='' ,mode='a') as f:
-        csv_writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-        csv_writer.writerow([datetime.now().strftime("%d/%m/%Y, %H:%M:%S"), data['email'],data['subject'],data['message']])
+def write_to_json(data):
+    directory = 'responses'
+    Path(directory).mkdir(parents=True, exist_ok=True)
+    with open(os.path.join(directory, f'reponse.{datetime.now().strftime("%Y%m%d_%H-%M-%S")}.json'), mode='a') as f:
+        json.dump(data, f)
