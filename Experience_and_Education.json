@@ -1,0 +1,93 @@
+{
+    "Education":[
+        {
+            "School":"University of Reading",
+            "Logo":"Reading University.png",
+            "Start Date":"10/2009",
+            "End Date":"07/2013",
+            "Course":"Robotics",
+            "Grades":"2:1 MEng Robotics (Honours)",
+            "url":"http://www.reading.ac.uk/"
+        },
+        {
+            "School":"Hazelwick School",
+            "Logo":"Hazelwick.png",
+            "Start Date":"09/2003",
+            "End Date":"06/2009",
+            "Course":"",
+            "Grades":"A-Level Electronics (A), Math's (C), Physics (C)\n10 GCSEs (Grades A, B and C)",
+            "url":"https://www.hazelwick.org/"
+        }
+    ],
+    "Experience":[
+        {
+            "Company":"Fidessa",
+            "Logo":"Fidessa.png",
+            "Roles":[
+                {
+                    "Role":"Developer, Tools and Automation",
+                    "Location":"Woking, Surrey, United Kingdom",
+                    "Start Date":"01/01/2021",
+                    "End Date":"",
+                    "Description":"Designing, developing and maintaining software solutions used to automate the work of the delivery teams."
+                },
+                {
+                    "Role":"Delivery Engineer",
+                    "Location":"Woking, Surrey, United Kingdom",
+                    "Start Date":"24/11/2014",
+                    "End Date":"31/12/2020",
+                    "Description":"My main responsibility was the automation of the deployment and refreshing of clients systems and data to allow for faster promotion of new software and more reliable testing before changes that have been made make their way onto their production systems. Currently Python and MongoDB are used to complete these tasks.\nOther tasks involve the customisation of clients systems. The predominant languages used in these tasks is Tcl, SQL and Fidessa's proprietary language.\n\nDuring my time at Fidessa I have received two awards:\n- Commitment and Dedication\n- Service / Excellence"
+                }
+            ],
+            "url":"https://iongroup.com/ion-markets/eq/fidessa/?colour=blue&customRedirect=useful-links/privacy-policy"
+        },
+        {
+            "Company":"Advanced Roofing Services Ltd",
+            "Logo":"Advanced Roofing.png",
+            "Roles":[
+                {
+                    "Role":"Logistics Assistant",
+                    "Location":"Forest Row, East Sussex, United Kingdom",
+                    "Start Date":"01/07/2013",
+                    "End Date":"01/11/2014",
+                    "Description":"Helped with the deployment and decommissioning of sites."
+                }
+            ],
+            "url":"https://www.advancedroofingservices.co.uk/"
+        }
+    ],
+    "Technical Skills":[
+        {
+            "Skill":"Python",
+            "Description":"Originally used and picked up at University for my projects. I now use it to create automation tools for the department. Around 3-4 years ago some of the tools and scripts the department was using were migrated to Python and I was heavily involved."
+        },
+        {
+            "Skill":"Tcl",
+            "Description":"Originally picked up and learnt during my time at Fidessa, so now looking at roughly 5 years of experience."
+        },
+        {
+            "Skill":"Proprietary Languages",
+            "Description":"I also have some experience with a proprietary language, as Fidessa has its own in house language that is used from time to time."
+        },
+        {
+            "Skill":"SQL",
+            "Description":"Around 4 years of experience using SQL at Work."
+        },
+        {
+            "Skill":"MongoDB",
+            "Description":"Around 1 years worth of experience."
+        },
+        {
+            "Skill":"Regex",
+            "Description":"Regex has been an incredibly useful tool to parse and manipulate data both at university and my time at Fidessa."
+        },
+        {
+            "Skill":"Perforce",
+            "Description":"Perforce is the main source control software I have used at work."
+        },
+        {
+            "Skill":"Office Suites",
+            "Description":"Microsoft Office (Word, Excel, Powerpoint)"
+        }
+    ]
+}
