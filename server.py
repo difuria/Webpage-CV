@@ -65,7 +65,7 @@ def get_duration(start_date, end_date=None):
 @app.route('/<string:html_page>')
 def page(html_page="index.html"):
     if html_page == "Experience and Education.html":
-        with open("Experience_and_Education.json") as json_file:
+        with open(os.path.join(app.root_path, "Experience_and_Education.json")) as json_file:
             data = json.load(json_file)
         
         experience = "                  <section>"
@@ -110,7 +110,7 @@ def page(html_page="index.html"):
                         <a href="{company["url"]}"><img src="static/assets/images/Logos/{company["Logo"]}" alt="" class="img-responsive" style="width:50px;height:50px" align="left"/></a>
                       </div>
                       <div class="column" style="white-space:normal">
-                          <h4>Fidessa</h4>
+                          <h4>{company["Company"]}</h4>
                           {get_duration(company_start_date, company_end_date)}
                       </div>
                     </div>\n{roles}"""
