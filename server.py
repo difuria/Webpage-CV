@@ -5,6 +5,18 @@ from flask import Flask, render_template, send_from_directory, request, redirect
 import json, os
 # python anywhere doesn't have pymongo on the whitelist for free accounts
 #, pymongo
+
+def read_json(json_file):
+    with open(json_file, mode='r') as j_f:
+        data = json.load(j_f)
+    return data
+
+def write_to_json(data):
+    directory = 'responses'
+    Path(directory).mkdir(parents=True, exist_ok=True)
+    with open(os.path.join(directory, f'reponse.{datetime.now().strftime("%Y%m%d_%H-%M-%S")}.json'), mode='a') as f:
+        json.dump(data, f)
+
 app = Flask(__name__)
 """
 Activate virtual environment
@@ -20,9 +32,13 @@ Start server
 python -m  flask run
 """
 
-# client = pymongo.MongoClient("mongodb+srv://website_cv:<password>@website-cv.k6hua.mongodb.net/Website-CV?retryWrites=true&w=majority")
-# db = client['Website-CV'] 
-# mycol = db["Client"] 
+nav_data = read_json(os.path.join(app.root_path, "Data", "Navigation.json"))
+navigation_headers = ""
+for i, nav in enumerate(nav_data["Navigation"]):
+    if os.path.isfile(os.path.join(app.root_path, 'templates', nav["Page"])):
+        navigation_headers += f"""          <li><a href="{nav["Page"]}" title="{nav["Title"]}">{i+1:02d} : {nav["Description"]}</a></li>"""
+    else:
+        print(f"""{nav["Page"]} doesn't exist.""")
 
 @app.route('/favicon.ico')
 def favicon():
@@ -31,7 +47,8 @@ def favicon():
 
 @app.route('/')
 def my_home():
-    return render_template('index.html')
+    # return page()
+    return render_template('index.html', nav=navigation_headers)
 
 def get_duration(start_date, end_date=None):
     duration_string = ''
@@ -64,9 +81,27 @@ def get_duration(start_date, end_date=None):
 
 @app.route('/<string:html_page>')
 def page(html_page="index.html"):
-    if html_page == "Experience and Education.html":
-        with open(os.path.join(app.root_path, "Experience_and_Education.json")) as json_file:
-            data = json.load(json_file)
+    if html_page == "works.html":
+        data = read_json(os.path.join(app.root_path, "Data", "Projects.json"))
+        projects = ""
+        number_of_project = len(data["Projects"])
+        for i, project in enumerate(data["Projects"]):
+            projects += f"""                    <div class="col-sm-4">
+                      <a href="{project["url"]}" title="" class="black-image-project-hover">
+                        <img src="{project["image"]}" alt="" class="img-responsive">
+                      </a>
+                      <div class="card-container card-container-lg">
+                        <h4>{number_of_project-i:03d}/{number_of_project:03d}</h4>
+                        <h3>{project["Title"]}</h3>
+                        <p>{project["Description"]}</p>
+                        <a href="{project["url"]}" title="" class="btn btn-default">Discover</a>
+                      </div>
+                    </div>\n"""
+        
+        return render_template(html_page, nav=navigation_headers, proj=projects)
+
+    elif html_page == "Experience and Education.html":
+        data = read_json(os.path.join(app.root_path, "Data", "Experience_and_Education.json"))
         
         experience = "                  <section>"
         for company in data["Experience"]:
@@ -159,28 +194,19 @@ def page(html_page="index.html"):
                       <p>{skill["Description"]}</p>
                     </div>
                   </div>"""
-        return render_template(html_page, company_duration=get_duration(datetime(2014,11,24)), role_duration=get_duration(datetime(2021,1,1)), tech_skills=technical_skills, edu=education, exp=experience)
+        return render_template(html_page, nav=navigation_headers, tech_skills=technical_skills, edu=education, exp=experience)
     else:
-        return render_template(html_page)
+        return render_template(html_page, nav=navigation_headers)
 
 @app.route('/submit_form', methods=['POST', 'GET'])
 def submit_form():
     if request.method == "POST":
-        # Store data so we can see who contacted, when they last contacted and possibly how many times they have contacted
-        # Check first to see if this email has submitted before, if so update what's stored instead of adding further information. 
         data = request.form.to_dict()
-        # found = db.Contact.find_one({'email':data['email']}) 
-        # if found:
-        #     counter = found['counter'] + 1
-        #     db.Contact.update_one({'email':data['email']}, {'$set':{'subject':data['subject'], 'message':data['message'], 'counter':counter, 'date':datetime.now().strftime("%d/%m/%Y, %H:%M:%S") }})
-        # else:
-        #     db.Contact.insert_one({'email':data['email'], 'subject':data['subject'], 'message':data['message'], 'counter':1, 'date':datetime.now().strftime("%d/%m/%Y, %H:%M:%S")})
-
         write_to_json(data)
         # TODO - add a means of emailing said person / notifying me this has happened
-        return render_template('thank you.html', message=Markup('Submission successful!<br>I\'ll be in contact as soon as possible.'))
+        return render_template('thank you.html', nav=navigation_headers, message=Markup('Submission successful!<br>I\'ll be in contact as soon as possible.'))
     else:
-        return render_template('thank you.html', message='Something went wrong. Try again!')
+        return render_template('thank you.html', nav=navigation_headers, message='Something went wrong. Try again!')
 
 @app.route('/Dom_di_Furia_CV', methods=['GET'])
 def Dom_di_Furia_CV():
@@ -188,9 +214,3 @@ def Dom_di_Furia_CV():
         return send_from_directory('static', 'Dom_di_Furia_CV.pdf')
     else:
         return 'Something went wrong. Try again!'
-
-def write_to_json(data):
-    directory = 'responses'
-    Path(directory).mkdir(parents=True, exist_ok=True)
-    with open(os.path.join(directory, f'reponse.{datetime.now().strftime("%Y%m%d_%H-%M-%S")}.json'), mode='a') as f:
-        json.dump(data, f)

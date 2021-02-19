@@ -1,0 +1,29 @@
+{
+    "Navigation":[
+        {
+            "Page":"./index.html",
+            "Title":"",
+            "Description":"Home"
+        },
+        {
+            "Page":"./about.html",
+            "Title":"",
+            "Description":"About me"
+        },
+        {
+            "Page":"./Experience and Education.html",
+            "Title":"",
+            "Description":"Experience and Education"
+        },
+        {
+            "Page":"./works.html",
+            "Title":"",
+            "Description":"Projects"
+        },
+        {
+            "Page":"./contact.html",
+            "Title":"",
+            "Description":"Contact"
+        }
+    ]
+}
