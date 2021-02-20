@@ -36,7 +36,7 @@ nav_data = read_json(os.path.join(app.root_path, "Data", "Navigation.json"))
 navigation_headers = ""
 for i, nav in enumerate(nav_data["Navigation"]):
     if os.path.isfile(os.path.join(app.root_path, 'templates', nav["Page"])):
-        navigation_headers += f"""          <li><a href="{nav["Page"]}" title="{nav["Title"]}">{i+1:02d} : {nav["Description"]}</a></li>"""
+        navigation_headers += f"""          <li><a href="{nav["Page"]}" title="{nav["Title"]}">{i+1:02d} : {nav["Title"]}</a></li>"""
     else:
         print(f"""{nav["Page"]} doesn't exist.""")
 
