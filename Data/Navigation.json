@@ -1,24 +1,22 @@
-{
-    "Navigation":[
-        {
-            "Page":"./index.html",
-            "Title":"Home"
-        },
-        {
-            "Page":"./about.html",
-            "Title":"About me"
-        },
-        {
-            "Page":"./Experience and Education.html",
-            "Title":"Experience and Education"
-        },
-        {
-            "Page":"./works.html",
-            "Title":"Projects"
-        },
-        {
-            "Page":"./contact.html",
-            "Title":"Contact"
-        }
-    ]
-}
+[
+    {
+        "Page":"./index.html",
+        "Title":"Home"
+    },
+    {
+        "Page":"./about.html",
+        "Title":"About me"
+    },
+    {
+        "Page":"./Experience and Education.html",
+        "Title":"Experience and Education"
+    },
+    {
+        "Page":"./works.html",
+        "Title":"Projects"
+    },
+    {
+        "Page":"./contact.html",
+        "Title":"Contact"
+    }
+]
