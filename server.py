@@ -184,6 +184,20 @@ def page(html_page="index.html"):
                     </div>\n"""
         education += "                  </section>"
 
+        awards = "                  <section>"
+        for award in data["Awards"]:
+            award_list = "<ul>"
+            for a in award["Awards"]:
+                award_list += f"""<li>{a["Name"]}</li>"""
+            award_list += "<ul>"
+            awards += f"""<div class="column" style="white-space:normal">
+                          <h4>{award["Location"]}</h4>
+                          {award["Description"]}<br>
+                          {award_list}
+                      </div>"""
+
+        awards += "                  </section>"
+
         technical_skills = ""
         for skill in data["Technical Skills"]:
             technical_skills += f"""                  <div class="row">
@@ -194,7 +208,7 @@ def page(html_page="index.html"):
                       <p>{skill["Description"]}</p>
                     </div>
                   </div>"""
-        return render_template(html_page, nav=navigation_headers, tech_skills=technical_skills, edu=education, exp=experience)
+        return render_template(html_page, nav=navigation_headers, tech_skills=technical_skills, edu=education, awd=awards, exp=experience)
     else:
         return render_template(html_page, nav=navigation_headers)
 
