@@ -3,6 +3,7 @@ from dateutil import relativedelta
 from pathlib import Path
 from flask import Flask, render_template, send_from_directory, request, redirect, Markup
 import json, os
+from subprocess import Popen
 # python anywhere doesn't have pymongo on the whitelist for free accounts
 #, pymongo
 
@@ -218,6 +219,10 @@ def submit_form():
         data = request.form.to_dict()
         write_to_json(data)
         # TODO - add a means of emailing said person / notifying me this has happened
+        try:
+            Popen(['python', 'EmailResponses.py'])
+        except Exception as e:
+            print(e)
         return render_template('thank you.html', nav=navigation_headers, message=Markup('Submission successful!<br>I\'ll be in contact as soon as possible.'))
     else:
         return render_template('thank you.html', nav=navigation_headers, message='Something went wrong. Try again!')
