@@ -62,13 +62,16 @@ try:
             continue
         email_text = f"""From: {sent_from}
 To: {sent_to}
-Subject: {data["subject"]}"""
+Subject: {data["subject"]}
+
+Message Sent From: {data["email"]}
+{data["message"]}"""
         server.sendmail(sent_from, sent_to, email_text)
         # If we've notified of the addition of the file then remove it 
         #os.remove(file)
         if sys.platform == "linux":
-            os.makedirs(os.path.expanduser("~/Archive"))
-            os.rename(os.path.join(RESPONSE_DIR, file), os.path.join(ARCHIVE_DIR, file))
+            os.makedirs(os.path.expanduser("~/Archive"), exist_ok=True)
+            os.rename(os.path.join(RESPONSE_DIR, file), os.path.join(ARCHIVE_DIR, os.path.basename(file)))    
     server.close()
     Log("Complete")
 except Exception as e:
