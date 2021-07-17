@@ -2,7 +2,7 @@ from datetime import datetime
 from dateutil import relativedelta
 from pathlib import Path
 from flask import Flask, render_template, send_from_directory, request, redirect, Markup
-import json, os, sys
+import json, os, stat, sys
 from subprocess import Popen, PIPE
 # python anywhere doesn't have pymongo on the whitelist for free accounts
 #, pymongo
@@ -221,10 +221,10 @@ def submit_form():
         # TODO - add a means of emailing said person / notifying me this has happened
         try:
             if sys.platform == 'linux':
-                process = Popen(['python', os.path.join(os.environ["HOME"], "Webpage-CV", "EmailResponses.py")], stdout=PIPE, stderr=PIPE)
-                output = process.communicate()
-                with open("process.out", "a") as f:
-                    f.write("\n".join(output))
+                # Make sure file is executable
+                st = os.stat(os.path.join(os.environ["HOME"], "Webpage-CV", "EmailResponses.py"))                                                                                                                
+                os.chmod(os.path.join(os.environ["HOME"], "Webpage-CV", "EmailResponses.py"), st.st_mode | stat.S_IEXEC)
+                process = Popen("python " + os.path.join(os.environ["HOME"], "Webpage-CV", "EmailResponses.py"), executable='/bin/bash', shell=True, stdout=PIPE, stderr=PIPE)
             else:
                 Popen(['python', 'EmailResponses.py'])
         except Exception as e:
